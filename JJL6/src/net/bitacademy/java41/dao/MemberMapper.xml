@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.bitacademy.java41.dao.MemberMapper">
+	<select id="getMember" 
+			parameterType="map" 
+			resultType="Member">
+	    SELECT t1.EMAIL,t1.MNAME as name, t1.PWD as password, t1.TEL, t1.BLOG, t1.REG_DATE as regDate, t1.UPDATE_DATE as updateDate, t1.ANO as addressNo, t1.DET_ADDR as detailAddress, t1.TAG, t1.LEVEL, t2.IMGURL as photos FROM test.SPMS_MEMBS t1 left join test.SPMS_MEMIMG t2 on t1.EMAIL= t2.EMAIL  where t1.EMAIL=#{email} and t1.PWD=#{password}
+	</select>
+	<select id="getMember2" 
+			parameterType="map" 
+			resultType="String">
+	    SELECT t2.IMGURL as photos FROM test.SPMS_MEMBS t1 left join test.SPMS_MEMIMG t2 on t1.EMAIL= t2.EMAIL  where t1.EMAIL=#{email} and t1.PWD=#{password}
+	</select>
+	<insert id="add" parameterType="Member">
+		insert into SPMS_MEMBS(EMAIL,MNAME,PWD,TEL,
+			BLOG,REG_DATE,UPDATE_DATE,DET_ADDR,TAG,LEVEL)
+		values(#{email},#{name},#{password},#{tel},
+			#{blog},now(),now(),#{detailAddress},#{tag},#{level})
+	</insert>
+	<select id="list" resultType="Member">
+	  SELECT t1.EMAIL,t1.MNAME as name, t1.PWD as password, t1.TEL, t1.BLOG, t1.REG_DATE as regDate, t1.UPDATE_DATE as updateDate, t1.ANO as addressNo, t1.DET_ADDR as detailAddress, t1.TAG, t1.LEVEL FROM test.SPMS_MEMBS t1 order by MNAME
+	</select>
+	<select id="get1" parameterType="String" resultType="Member">
+	   select t1.EMAIL,t1.MNAME as name, t1.PWD as password, t1.TEL, t1.BLOG, t1.REG_DATE as regDate, t1.UPDATE_DATE as updateDate, t1.ANO as addressNo, t1.DET_ADDR as detailAddress, t1.TAG, t1.LEVEL FROM test.SPMS_MEMBS t1 where t1.EMAIL=#{email}
+	</select>
+	<select id="get2" parameterType="int" resultType="Member">
+	  select t1.LEVEL, t2.EMAIL, t2.BLOG, t2.DET_ADDR as detailAddress, t2.MNAME as name, t2.PWD as password, t2.REG_DATE as regDate, t2.TAG, t2.TEL, t2.UPDATE_DATE as updateDate from SPMS_PRJMEMB t1, SPMS_MEMBS t2 where t1.EMAIL = t2.EMAIL and t1.PNO = #{pno} order by t1.PNO
+	</select>
+	<update id="change" parameterType="map">
+	update SPMS_MEMBS set MNAME =#{member.name},PWD=#{member.password},TEL=#{member.tel},BLOG=#{member.blog},UPDATE_DATE=now(), DET_ADDR = #{member.detailAddress}, TAG=#{member.tag}, LEVEL=#{member.level} where EMAIL=#{member.email}
+	</update>
+	<delete id="remove1" parameterType = "String">
+	delete from SPMS_MEMIMG where EMAIL=#{email}
+	</delete>
+	<delete id="remove2" parameterType = "String">
+	delete from SPMS_MEMBS where EMAIL=#{email}
+	</delete>
+	<update id="changePassword" parameterType="map">
+	update SPMS_MEMBS set PWD=#{newPassword},UPDATE_DATE=now() where EMAIL=#{email} and PWD=#{oldPassword}
+	</update>
+	<insert id="addPhoto" parameterType="map">
+		insert into SPMS_MEMIMG(EMAIL,IMGURL)
+		values(#{email},#{path})
+	</insert>
+	<select id="listPhoto" parameterType="String" resultType="Photo">
+	  select INO,IMGURL from SPMS_MEMIMG where EMAIL=#{email}
+	  </select>
+</mapper> 
+
+
+
+
+
+

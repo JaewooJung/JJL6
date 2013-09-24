@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="net.bitacademy.java41.dao.TaskMapper">
+<select id="list" parameterType="int" resultType="Task">
+SELECT TNO, PNO, TITLE, UIPROTOURL, CONTENT, START_DATE as startDate, END_DATE as endDate, STATUS FROM SPMS_TASKS where PNO=#{pno}
+</select>
+<insert id="add" parameterType="Task">
+insert into SPMS_TASKS(PNO,TITLE,UIPROTOURL,CONTENT,START_DATE,END_DATE,STATUS) values(#{pno},#{title},#{uiprotourl},#{content},#{startDate},#{endDate},#{status})
+</insert>
+<select id="getTask" parameterType="int" resultType="Task">
+select TNO, PNO, TITLE, UIPROTOURL, CONTENT, START_DATE as startDate, END_DATE as endDate, STATUS from SPMS_TASKS where TNO=#{tno}
+</select>
+<update id="change" parameterType="Task">
+update SPMS_TASKS set PNO=#{pno}, TITLE=#{title}, UIPROTOURL=#{uiprotourl}, CONTENT=#{content}, START_DATE=#{startDate}, END_DATE=#{endDate}, STATUS=#{status} where TNO = #{tno}
+</update>
+<delete id="remove" parameterType="int">
+delete from SPMS_TASKS where TNO=#{tno}
+</delete>
+
+</mapper>        
